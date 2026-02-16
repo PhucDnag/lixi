@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cào Lì Xì Tết Bính Ngọ 2026</title>
+    <style>
+        :root {
+            --red-tet: #d32f2f;
+            --gold-tet: #ffd700;
+            --dark-red: #8b0000;
+            --light-gold: #ffea00;
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at center, var(--red-tet) 0%, var(--dark-red) 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Nút Bật/Tắt nhạc */
+        #music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid var(--gold-tet);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px var(--shadow);
+            transition: transform 0.3s;
+        }
+        #music-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 215, 0, 0.4);
+        }
+
+        /* Hiệu ứng hoa rơi */
+        .petals {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .petal {
+            position: absolute;
+            background-color: #ffb7c5; /* Màu hoa đào */
+            border-radius: 15px 0 15px 0;
+            box-shadow: 0 0 5px rgba(255, 183, 197, 0.5);
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg) scale(0.5); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg) scale(1); opacity: 0; }
+        }
+
+        /* Layout chính */
+        .container {
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            margin-top: 20px;
+            animation: bounceIn 1s ease-out;
+        }
+
+        .header h1 {
+            color: var(--gold-tet);
+            text-shadow: 2px 4px 8px var(--shadow);
+            font-size: clamp(2em, 6vw, 3.5em);
+            margin-bottom: 5px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: clamp(1em, 3.5vw, 1.4em);
+            color: #ffe0b2;
+            margin-top: 0;
+            font-weight: 500;
+        }
+
+        /* Form Nhập Mã */
+        #login-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 2px solid var(--gold-tet);
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 15px 35px var(--shadow);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            width: 90%;
+            max-width: 350px;
+        }
+
+        #login-section input {
+            padding: 15px;
+            font-size: 1.2em;
+            border: 2px solid #ccc;
+            border-radius: 12px;
+            outline: none;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: all 0.3s;
+        }
+
+        #login-section input:focus {
+            border-color: var(--gold-tet);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        #login-section button {
+            margin-top: 20px;
+            padding: 15px 0;
+            width: 100%;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--dark-red);
+            background: linear-gradient(to bottom, var(--light-gold), var(--gold-tet));
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        #login-section button:active {
+            transform: scale(0.95);
+        }
+
+        .error-msg {
+            color: #ff8a80;
+            margin-top: 15px;
+            font-weight: bold;
+            height: 20px;
+            font-size: 0.95em;
+        }
+
+        /* Khu vực Cào Lì Xì */
+        #scratch-section {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .scratch-card-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            height: 160px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+            border: 4px solid var(--gold-tet);
+            background: repeating-linear-gradient(45deg, #fff, #fff 10px, #fff8e1 10px, #fff8e1 20px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .prize-text {
+            position: absolute;
+            color: var(--red-tet);
+            font-size: 2.2em;
+            font-weight: 900;
+            text-align: center;
+            z-index: 1;
+            width: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .prize-text span {
+            display: block;
+            font-size: 0.35em;
+            color: #555;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            cursor: crosshair;
+            /* FIX CHUẨN ĐIỆN THOẠI: Chống cuộn trang khi chạm vào thẻ cào */
+            touch-action: none; 
+        }
+
+        #result-message {
+            margin-top: 25px;
+            font-size: 1.4em;
+            color: var(--gold-tet);
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 1px 2px 4px var(--shadow);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+            background: rgba(0,0,0,0.4);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px dashed var(--gold-tet);
+            max-width: 90%;
+        }
+
+        #result-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        /* Nút nhận thưởng */
+        .claim-btn {
+            display: none;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: var(--gold-tet);
+            color: var(--dark-red);
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="lixi.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-toggle" onclick="toggleMusic()">🎵</button>
+
+    <div class="petals" id="petals-container"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🧧 LÌ XÌ BÍNH NGỌ 2026 🐎</h1>
+            <p>Cào ngay nhận lộc liền tay!</p>
+        </div>
+
+        <div id="login-section">
+            <h3 style="color: var(--gold-tet); margin-top: 0;">NHẬP MÃ LÌ XÌ</h3>
+            <input type="text" id="code-input" placeholder="Nhập mã tại đây..." maxlength="10"><br>
+            <button onclick="checkCode()">MỞ LÌ XÌ NGAY</button>
+            <div id="error-msg" class="error-msg"></div>
+        </div>
+
+        <div id="scratch-section">
+            <h3 style="color: var(--light-gold); text-shadow: 1px 1px 2px #000; text-align: center;">Dùng tay cạo lớp nhũ bạc bên dưới nhé! 👇</h3>
+            <div class="scratch-card-container">
+                <div class="prize-text" id="prize-value">
+                    </div>
+                <canvas id="scratch-pad" width="320" height="160"></canvas>
+            </div>
+            <div id="result-message"></div>
+            <button class="claim-btn" id="claim-btn" onclick="alert('Em chụp lại màn hình lại rồi gửi cho anh để nhận thưởng nha!')">NHẬN THƯỞNG</button>
+        </div>
+    </div>
+
+    <script>
+        // --- TẠO HIỆU ỨNG HOA RƠI ---
+        function createPetals() {
+            const container = document.getElementById('petals-container');
+            for (let i = 0; i < 20; i++) {
+                let petal = document.createElement('div');
+                petal.classList.add('petal');
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                petal.style.animationDelay = Math.random() * 5 + 's';
+                petal.style.width = (Math.random() * 10 + 5) + 'px';
+                petal.style.height = (Math.random() * 10 + 5) + 'px';
+                // Đổi màu vàng xen kẽ đỏ hồng
+                if(Math.random() > 0.5) petal.style.backgroundColor = '#ffd700'; 
+                container.appendChild(petal);
+            }
+        }
+        createPetals();
+
+        // --- QUẢN LÝ NHẠC NỀN ---
+        const bgMusic = document.getElementById('bg-music');
+        let isMusicPlaying = false;
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                document.getElementById('music-toggle').innerText = '🔇';
+            } else {
+                bgMusic.play();
+                document.getElementById('music-toggle').innerText = '🎵';
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        // --- CẤU HÌNH TỈ LỆ ---
+        const prizeConfig = [
+            // { name: "10,000 VNĐ", weight: 60, msg: "Lộc nhỏ đầu năm, may mắn cả năm!" },
+            // { name: "20,000 VNĐ", weight: 25, msg: "Tiền vô như nước!" },
+            // { name: "50,000 VNĐ", weight: 10, msg: "Phát tài phát lộc!" },
+            // { name: "100,000 VNĐ", weight: 4, msg: "Mã đáo thành công!" },
+            { name: "520,000 VNĐ", weight: 1, msg: "ĐẠI CÁT ĐẠI LỢI! Quá may mắn!" }
+        ];
+
+        const defaultCodes = {
+            "TET2026": false,
+            "LIXI888": false,
+            "NAMMOI": false,
+            "BINHNGO": false,
+            "BINHAN": false,
+            "ANKHANG": false,
+            "MAYMAN": false,
+            "PHATLOC": false
+        };
+
+        if (!localStorage.getItem('usedCodes')) {
+            localStorage.setItem('usedCodes', JSON.stringify(defaultCodes));
+        }
+
+        let currentPrize = null;
+
+        function getRandomPrize() {
+            let totalWeight = prizeConfig.reduce((sum, prize) => sum + prize.weight, 0);
+            let randomNum = Math.random() * totalWeight;
+            
+            for (let i = 0; i < prizeConfig.length; i++) {
+                if (randomNum < prizeConfig[i].weight) return prizeConfig[i];
+                randomNum -= prizeConfig[i].weight;
+            }
+        }
+
+        // --- XỬ LÝ NHẬP MÃ ---
+        function checkCode() {
+            const inputCode = document.getElementById('code-input').value.trim().toUpperCase();
+            const errorMsg = document.getElementById('error-msg');
+            let db = JSON.parse(localStorage.getItem('usedCodes'));
+
+            if (inputCode === "") {
+                errorMsg.innerText = "Vui lòng nhập mã code!";
+                return;
+            }
+
+            if (db.hasOwnProperty(inputCode)) {
+                if (db[inputCode] === true) {
+                    errorMsg.innerText = "❌ Mã này đã được sử dụng!";
+                } else {
+                    errorMsg.innerText = "";
+                    db[inputCode] = true;
+                    localStorage.setItem('usedCodes', JSON.stringify(db)); 
+                    
+                    // Bật nhạc nếu chưa bật (Bắt buộc phải có tương tác của người dùng)
+                    if(!isMusicPlaying) toggleMusic();
+
+                    startScratchGame();
+                }
+            } else {
+                errorMsg.innerText = "❌ Mã code không tồn tại!";
+            }
+        }
+
+        // --- LOGIC CÀO CHUẨN XÁC ---
+        function startScratchGame() {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('scratch-section').style.display = 'flex';
+
+            currentPrize = getRandomPrize();
+            document.getElementById('prize-value').innerHTML = `${currentPrize.name} <br> <span>${currentPrize.msg}</span>`;
+
+            initCanvas();
+        }
+
+        function initCanvas() {
+            const canvas = document.getElementById('scratch-pad');
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            
+            // Vẽ lớp nhũ phủ (Gradient xám bạc giống thẻ cào thật)
+            let gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, "#a9a9a9");
+            gradient.addColorStop(0.5, "#d3d3d3");
+            gradient.addColorStop(1, "#808080");
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Vẽ pattern mờ (tùy chọn)
+            ctx.font = '22px Tahoma';
+            ctx.fillStyle = '#666666';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('✨ CẠO ĐỂ NHẬN LỘC ✨', canvas.width / 2, canvas.height / 2);
+
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.lineWidth = 28; // To hơn một chút cho dễ cào trên mobile
+
+            let isDrawing = false;
+            let isRevealed = false;
+
+            // FIX: Hàm lấy tọa độ chuẩn xác dựa trên tỉ lệ scale của Canvas và CSS
+            const getMousePos = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                
+                // Tính toán hệ số co giãn giữa kích thước thật của canvas và kích thước hiển thị CSS
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+
+                return {
+                    x: (clientX - rect.left) * scaleX,
+                    y: (clientY - rect.top) * scaleY
+                };
+            };
+
+            const startDrawing = (e) => {
+                isDrawing = true;
+                const pos = getMousePos(e);
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+            };
+
+            const draw = (e) => {
+                if (!isDrawing || isRevealed) return;
+                e.preventDefault(); // Ngăn cuộn trang tuyệt đối khi đang cào
+                const pos = getMousePos(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+                checkScratchedArea();
+            };
+
+            const stopDrawing = () => { isDrawing = false; };
+
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseleave', stopDrawing);
+
+            canvas.addEventListener('touchstart', startDrawing, {passive: false});
+            canvas.addEventListener('touchmove', draw, {passive: false});
+            canvas.addEventListener('touchend', stopDrawing);
+
+            function checkScratchedArea() {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                let transparentPixels = 0;
+                
+                for (let i = 3; i < imageData.length; i += 32) { 
+                    if (imageData[i] === 0) transparentPixels++;
+                }
+
+                const totalPixelsCheck = imageData.length / 32;
+                const percent = (transparentPixels / totalPixelsCheck) * 100;
+
+                if (percent > 45 && !isRevealed) {
+                    isRevealed = true;
+                    canvas.style.transition = 'opacity 0.5s';
+                    canvas.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        canvas.style.display = 'none';
+                        showResult();
+                    }, 500);
+                }
+            }
+        }
+
+        function showResult() {
+            const resultMsg = document.getElementById('result-message');
+            const claimBtn = document.getElementById('claim-btn');
+            
+            resultMsg.innerHTML = `🎉 CHÚC MỪNG 🎉<br>Em nhận được <span style="color: #fff;">${currentPrize.name}</span>!`;
+            resultMsg.classList.add('show');
+            claimBtn.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
