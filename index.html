@@ -493,7 +493,8 @@
                 const totalPixelsCheck = imageData.length / 32;
                 const percent = (transparentPixels / totalPixelsCheck) * 100;
 
-                if (percent > 45 && !isRevealed) {
+                // Đã sửa 45 thành 80 để yêu cầu cào sạch 80% mới qua màn
+                if (percent > 80 && !isRevealed) {
                     isRevealed = true;
                     canvas.style.transition = 'opacity 0.5s';
                     canvas.style.opacity = '0';
